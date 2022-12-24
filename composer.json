@@ -1,0 +1,16 @@
+{
+    "name": "saeedkdev/api-craft",
+    "description": "Simple PHP MVC Framework, Crafted with love",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "classmap": [
+            "app/"
+        ]
+    },
+    "require": {
+        "symfony/console": "^6.0",
+        "doctrine/dbal": "^3.5"
+    }
+}

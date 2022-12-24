@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . './vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Console\Commands\CreateMigrationCommand;
+use Console\Commands\RunMigrationCommand;
+
+$app = new Application('craft', '1.0.0 (beta)');
+
+$app->add(new CreateMigrationCommand());
+$app->add(new RunMigrationCommand());
+
+$app->run();
