@@ -38,4 +38,8 @@ class DatabaseConnection {
 		return self::$conn;
 	}
 
+	public static function getConnection(): Connection {
+		return self::getInstance();
+	}
+
 }

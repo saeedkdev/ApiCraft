@@ -29,39 +29,48 @@ class CreateMigrationCommand extends Command {
 	{
 		$table = $input->getArgument('table');
 		$path = APP_ROOT .'/app/migrations/';
+		$timestamp = date('Y_m_d_His');
 
 		# migration file name
-		$migrationFile = 'create_'.$table.'_table_migration.php';
+		$migrationFile = 'create_'.$table.'_table.php';
 
 		# migration file path
-		$migrationPath = $path . '/' . date('Y_m_d_His') . '_' . $migrationFile;
+		$migrationPath = $path . '/' . 'migration_'. $timestamp . '_' . $migrationFile;
 
-		$tableClass = 'Create' . ucfirst($table) . 'Table';
+		$tableClass = 'Migration_'.$timestamp . '_create_' . $table . '_table';
 
 		# migration file content
 		$migrationContent = <<<EOT
-			<?php
+		<?php
 
-			namespace App\Migrations;
-			
-			use	App\Database\DatabaseConnection;
-			use	Doctrine\DBAL\Schema\Schema;
-			use	Doctrine\Migrations\AbstractMigration;
-			
-			class $tableClass extends AbstractMigration {
-			
-				public function up(Schema \$schema): void {
-					\$table = \$schema->createTable('$table');
-					\$table->addColumn('id', 'integer', ['autoincrement' => true]);
-					\$table->addColumn('created_at', 'datetime');
-					\$table->addColumn('updated_at', 'datetime');
-					\$table->setPrimaryKey(['id']);
-				}
-			
-				public function down(Schema \$schema): void {
-					\$schema->dropTable('$table');
-				}
+		namespace App\Migrations;
+		
+		use	App\Database\DatabaseConnection;
+		use	Doctrine\DBAL\Schema\Schema;
+		use	Doctrine\Migrations\AbstractMigration;
+		
+		class $tableClass extends AbstractMigration {
+
+			public function __construct()
+			{
+				\$this->connection = DatabaseConnection::getConnection();
+				\$this->logger = new \Doctrine\DBAL\Migrations\OutputWriter(function(\$message) {
+					echo \$message;
+				});
 			}
+		
+			public function up(Schema \$schema): void {
+				\$table = \$schema->createTable('$table');
+				\$table->addColumn('id', 'integer', ['autoincrement' => true]);
+				\$table->addColumn('created_at', 'datetime');
+				\$table->addColumn('updated_at', 'datetime');
+				\$table->setPrimaryKey(['id']);
+			}
+		
+			public function down(Schema \$schema): void {
+				\$schema->dropTable('$table');
+			}
+		}
 
 		EOT;
 
