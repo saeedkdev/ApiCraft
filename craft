@@ -3,41 +3,10 @@
 
 require_once __DIR__ . './vendor/autoload.php';
 
-use Doctrine\DBAL\DriverManager;
-use Doctrine\Migrations\Configuration\Configuration;
-use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
-use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
-use Doctrine\Migrations\DependencyFactory;
-use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
-use Doctrine\Migrations\Tools\Console\Command;
 use Symfony\Component\Console\Application;
 use Console\Commands\CreateMigrationCommand;
 use Console\Commands\RunMigrationCommand;
 
-$dbParams = [
-    'dbname' => 'api_craft',
-    'user' => 'root',
-    'password' => '',
-    'host' => 'localhost',
-    'driver' => 'pdo_mysql',
-];
-
-$connection = DriverManager::getConnection($dbParams);
-
-$configuration = new Configuration();
-$configuration->addMigrationsDirectory('App\Migrations', __DIR__ . 'app/migrations');
-$configuration->setAllOrNothing(true);
-$configuration->setCheckDatabasePlatform(false);
-
-$storageConfiguration = new TableMetadataStorageConfiguration();
-$storageConfiguration->setTableName('doctrine_migration_versions');
-
-$configuration->setMetadataStorageConfiguration($storageConfiguration);
-
-$dependencyFactory = DependencyFactory::fromConnection(
-    new ExistingConfiguration($configuration),
-    new ExistingConnection($connection)
-);
 
 $app = new Application('craft', '1.0.0 (beta)');
 
