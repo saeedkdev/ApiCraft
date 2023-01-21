@@ -40,41 +40,34 @@ class CreateMigrationCommand extends Command {
 		$tableClass = 'Migration_'.$timestamp . '_create_' . $table . '_table';
 
 		# migration file content
-		$migrationContent = <<<EOT
-		<?php
+        $migrationContent = <<<EOT
+        <?php
+            
+            namespace App\Migrations;
+            
+            use Doctrine\DBAL\Schema\Schema;
+            use Doctrine\Migrations\AbstractMigration;
+            
+            class $tableClass extends AbstractMigration {
+                public function up(Schema \$schema): void
+                {
+                    // this up() migration is auto-generated, please modify it to your needs
+                    \$schema->createTable('$table');
+                    \$table->addColumn('id', 'integer', ['autoincrement' => true]);
+                    \$table->addColumn('created_at', 'datetime');
+                    \$table->addColumn('updated_at', 'datetime');
+                }
+            
+                public function down(Schema \$schema): void
+                {
+                    // this down() migration is auto-generated, please modify it to your needs
+                    \$schema->dropTable('$table');
+                }
+            }
 
-		namespace App\Migrations;
-		
-		use	App\Database\DatabaseConnection;
-		use	Doctrine\DBAL\Schema\Schema;
-		use	Doctrine\Migrations\AbstractMigration;
-		
-		class $tableClass extends AbstractMigration {
-
-			public function __construct()
-			{
-				\$this->connection = DatabaseConnection::getConnection();
-				\$this->logger = new \Doctrine\DBAL\Migrations\OutputWriter(function(\$message) {
-					echo \$message;
-				});
-			}
-		
-			public function up(Schema \$schema): void {
-				\$table = \$schema->createTable('$table');
-				\$table->addColumn('id', 'integer', ['autoincrement' => true]);
-				\$table->addColumn('created_at', 'datetime');
-				\$table->addColumn('updated_at', 'datetime');
-				\$table->setPrimaryKey(['id']);
-			}
-		
-			public function down(Schema \$schema): void {
-				\$schema->dropTable('$table');
-			}
-		}
-
-		EOT;
-
-		# create migration file
+        EOT;
+            
+        # create migration file
 		file_put_contents($migrationPath, $migrationContent);
 
 		$output->writeln('<info>Migration created successfully</info>');
