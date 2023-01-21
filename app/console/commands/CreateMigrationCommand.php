@@ -42,28 +42,30 @@ class CreateMigrationCommand extends Command {
 		# migration file content
         $migrationContent = <<<EOT
         <?php
-            
-            namespace App\Migrations;
-            
-            use Doctrine\DBAL\Schema\Schema;
-            use Doctrine\Migrations\AbstractMigration;
-            
-            class $tableClass extends AbstractMigration {
-                public function up(Schema \$schema): void
-                {
-                    // this up() migration is auto-generated, please modify it to your needs
-                    \$schema->createTable('$table');
-                    \$table->addColumn('id', 'integer', ['autoincrement' => true]);
-                    \$table->addColumn('created_at', 'datetime');
-                    \$table->addColumn('updated_at', 'datetime');
-                }
-            
-                public function down(Schema \$schema): void
-                {
-                    // this down() migration is auto-generated, please modify it to your needs
-                    \$schema->dropTable('$table');
-                }
+        
+        namespace App\Migrations;
+        
+        use Doctrine\DBAL\Schema\Schema;
+        use Doctrine\Migrations\AbstractMigration;
+        
+        class $tableClass extends AbstractMigration {
+
+            public function up(Schema \$schema): void
+            {
+                // this up() migration is auto-generated, please modify it to your needs
+                \$table = \$schema->createTable('$table');
+                \$table->addColumn('id', 'integer', ['autoincrement' => true]);
+                \$table->addColumn('created_at', 'datetime');
+                \$table->addColumn('updated_at', 'datetime');
+                \$table->setPrimaryKey(['id']);
             }
+        
+            public function down(Schema \$schema): void
+            {
+                // this down() migration is auto-generated, please modify it to your needs
+                \$schema->dropTable('$table');
+            }
+        }
 
         EOT;
             

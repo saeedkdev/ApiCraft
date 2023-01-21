@@ -55,4 +55,9 @@ class DatabaseConnection {
         return self::getInstance()->createSchemaManager()->introspectSchema();
     }
 
+    // function to get logger with type LoggerInterface
+    public static function getLogger(): LoggerInterface {
+        return new \Psr\Log\NullLogger();
+    }
+
 }
