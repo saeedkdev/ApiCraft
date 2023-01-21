@@ -4,6 +4,7 @@ namespace App\Database;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 
 require_once __DIR__ . '/../../config/config.php';
 
@@ -37,5 +38,26 @@ class DatabaseConnection {
 
 		return self::$conn;
 	}
+
+	public static function getConnection(): Connection {
+		return self::getInstance();
+	}
+
+    public static function getQueryBuilder(): \Doctrine\DBAL\Query\QueryBuilder {
+        return self::getInstance()->createQueryBuilder();
+    }
+
+    public static function getSchemaManager(): \Doctrine\DBAL\Schema\AbstractSchemaManager {
+        return self::getInstance()->createSchemaManager();
+    }
+
+    public static function getSchema(): \Doctrine\DBAL\Schema\Schema {
+        return self::getInstance()->createSchemaManager()->introspectSchema();
+    }
+
+    // function to get logger with type LoggerInterface
+    public static function getLogger(): LoggerInterface {
+        return new \Psr\Log\NullLogger();
+    }
 
 }
