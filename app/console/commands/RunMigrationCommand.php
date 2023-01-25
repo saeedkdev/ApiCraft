@@ -27,7 +27,6 @@ class RunMigrationCommand extends Command {
         $fromSchema = clone $schema;
         $logger = DatabaseConnection::getLogger();
 
-        # if the migrations table does not exist, ask the user to run the init command
         try {
             $schema->getTable('migrations');
         } catch (\Exception $e) {
@@ -40,7 +39,6 @@ class RunMigrationCommand extends Command {
 
 
 		foreach ($files as $file) {
-            // if file.php is already in the migrations table, skip it
             $qb = $connection->createQueryBuilder();
             $qb->select('*')
                 ->from('migrations')
@@ -50,11 +48,9 @@ class RunMigrationCommand extends Command {
             if ($result) {
                 continue;
             }
-			// clases are return new class invoke up method
 			$className = 'App\\Migrations\\' . str_replace('.php', '', $file);
 			$migration = new $className($connection, $logger);
 			$migration->up($schema);
-            // execute schema up to here
             $fileNames[] = $file;
 		}
 
@@ -72,7 +68,6 @@ class RunMigrationCommand extends Command {
 
 
         $sql = $fromSchema->getMigrateToSql($schema, $connection->getDatabasePlatform());
-        # create the new table
         if(empty($sql)){
             $output->writeln('<info>No new migrations found.</info>');
             return Command::SUCCESS;

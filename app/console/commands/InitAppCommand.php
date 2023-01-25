@@ -22,7 +22,6 @@ class InitAppCommand extends Command {
 
         $schema = DatabaseConnection::getSchema();
 
-        # if schema has any tables, then the app is already initialized
         if (count($schema->getTables()) > 0) {
             $output->writeln('App is already initialized');
             return Command::SUCCESS;
@@ -35,7 +34,6 @@ class InitAppCommand extends Command {
         $table->setPrimaryKey(['id']);
 
 
-        # get the sql query of this table
         $sqlQuery = $schema->toSql($connection->getDatabasePlatform());
         list($sql) = $sqlQuery;
         if ($sql) {
