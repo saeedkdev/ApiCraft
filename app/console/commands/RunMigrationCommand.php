@@ -81,7 +81,7 @@ class RunMigrationCommand extends Command {
             $connection->executeQuery($query);
         }
 
-		$output->writeln('Migrations Run Successfully');
+		$output->writeln('<info>Migrations Run Successfully</info>');
 		return Command::SUCCESS;
 	}
 }

@@ -43,7 +43,7 @@ class InitAppCommand extends Command {
             $connection->executeStatement($sql);
         }
 
-        $output->writeln('Application initialized');
+        $output->writeln('<info>Application initialized successfully</info>');
 
         return Command::SUCCESS;
     }
