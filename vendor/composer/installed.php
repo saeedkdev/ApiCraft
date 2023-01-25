@@ -3,7 +3,7 @@
         'name' => 'saeedkdev/api-craft',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'bd937478fed40bc0830fabc2f5ce8c624a5a7e0a',
+        'reference' => '2c2c34805604152f1db0cabe723ed8b4a43fdba4',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -115,7 +115,7 @@
         'saeedkdev/api-craft' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'bd937478fed40bc0830fabc2f5ce8c624a5a7e0a',
+            'reference' => '2c2c34805604152f1db0cabe723ed8b4a43fdba4',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
